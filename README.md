@@ -1,4 +1,13 @@
 # Frame-Shift-Detector
+# jupyter nbconvert PeriodicityStats.ipynb --to pdf
+
+
+# full pipeline attempt #2:
+# use reads from 25-32, get biggest drop, get p-values by t-test, no permutations 
+time python get_statistics.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf all_jan2014_sort.sam bla_25_to_32 > blu&
+time python find_frameshifts2.py bla_25_to_32 
+output displayed in FrameShiftingReport.ipynb
+
 
 # full pipeline attempt # 1: 
 # use reads from 25-32, get biggest drop, get p-values by permutations, distributed, p-value from permutations  
