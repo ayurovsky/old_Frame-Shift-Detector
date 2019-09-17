@@ -88,7 +88,7 @@ gene = inFile.readline().strip()
 #start_idx = int(sys.argv[2])
 #end_idx = int(sys.argv[3])
 #outFile = open("output/" + sys.argv[2] + "_" + sys.argv[3] + "_" + sys.argv[1], 'w')
-outFile = open("output/bla", 'w')
+outFile = open("output/" + sys.argv[1] + "_with_found_frameshifts", 'w')
 
 counter = 0
 while gene:
@@ -110,9 +110,9 @@ while gene:
 	#print("_" + current_gene + "_")
 	#print(seq)
 	drop_info = get_drop(seq, ss)
-	if (current_gene == "YDL137W"):
-		drop_info = get_drop(seq, ss, True)
-		print("Max drop location for running 11 avearge of percent location is: " + str(drop_info[0]) + " " + str(drop_info[1]))
+	#if (current_gene == "YDL137W"):
+	#	drop_info = get_drop(seq, ss, True)
+	#	print("Max drop location for running 11 avearge of percent location is: " + str(drop_info[0]) + " " + str(drop_info[1]))
 
 	# decide if this is a + 1 or a -1 shift
 
@@ -143,7 +143,7 @@ while gene:
 	#print("f2 increase is " + str(f2_increase))
 	#print("f3 increase is " + str(f3_increase))
 
-	real_new_frame = "f2"	# TODO: check for -1s
+	real_new_frame = "f2"
 	real_increase = f2_increase
 	real_length = plus_1_stop - drop_info[0]
 	if (f3_increase > f2_increase):
@@ -159,7 +159,7 @@ while gene:
 	after_percents = np.array(custom_get_range_of_percents(ss, drop_info[0], drop_info[0]+real_length, "f1"))
 	t_test = stats.ttest_ind(before_percents, after_percents, equal_var=False)
 	p_value = t_test[1]
-	if (p_value <= 0.00001):
+	if (p_value <= 0.0001):
 		outFile.write("Gene: " + current_gene + "\tp-value: " + str(p_value) + "\tgene-length: " + str(len(seq)) + "\tshift-start-position: " + str(drop_info[0]) + "\tshift-length " + str(real_length) + "\n")
 		f1_starts = "" 
 		f_alt_starts = ""

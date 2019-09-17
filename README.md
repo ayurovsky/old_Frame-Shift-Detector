@@ -2,6 +2,14 @@
 # jupyter nbconvert PeriodicityStats.ipynb --to pdf
 
 
+
+----------------------------------------------------------------------------------------------------------------------------
+# first attempt at simulated reads - use real data and introduce shifts at various frequencies
+time python simulate_shifts.py bla_25_to_32 > junk # creates bla_25_to_32_with_simulated_shifts and bla_25_to_32_simulated_shifts_info
+time python find_frameshifts2.py bla_25_to_32_with_simulated_shifts
+output "*_simulated_shifts_info" and "*_with_simulated_shifts" displayed in SimulatedShiftReport.ipynb
+
+
 # full pipeline attempt #2:
 # use reads from 25-32, get biggest drop, get p-values by t-test, no permutations 
 time python get_statistics.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf all_jan2014_sort.sam bla_25_to_32 > blu&
