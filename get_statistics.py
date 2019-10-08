@@ -72,7 +72,7 @@ Ref_Dict[ref_chr] = ref_seq.upper()
 print("Read in the reference chromosomes\n")
 ################################################################################
 
-#TODO: need to allow protein genes with programmed frameshifts:
+# need to allow protein genes with programmed frameshifts:
 #1. read in "gene" not "CDS";  read in the entire sequence, don't care if does not match the sequence in the file - read in the whole gene, use the stuff from the coordinates to match
 #2. then if the same gene has introns, delete it for now...
 #3. double-check that YIL009C-A(EST3) and YOR239W(ABP140) get in here correctly, and then make sure that they are not removed by intersections - remove other genes if necessary...
@@ -80,6 +80,20 @@ print("Read in the reference chromosomes\n")
 # read in the annotation file, check that protein AA sequence matches with the reference string codons, check that stop at the end
 # introns no explicitly mentioned, filter out genes where ORF does not match the protein
 annFile = open(sys.argv[4],'r')
+Use_CDS_Dict = dict()
+for line in annFile:
+	if (line.startswith("#")):
+		continue
+	ts = line.strip().split()	
+	name_search = re.compile(".*Name=([\(\)\.0-9a-zA-z_-]*);.*").search(ts[8])
+	if (name_search != None):
+		name = name_search.group(1)
+		if (ts[2] == "five_prime_UTR_intron"):
+			Use_CDS_Dict[name] = 1			
+
+annFile.close()
+annFile = open(sys.argv[4],'r')
+
 Exclude_Dict = dict()
 for line in annFile:
 	if (line.startswith("#")):
@@ -88,7 +102,7 @@ for line in annFile:
 	name_search = re.compile(".*Name=([\(\)\.0-9a-zA-z_-]*);.*").search(ts[8])
 	if (name_search != None):
 		name = name_search.group(1)
-		if (ts[2] == "gene"):
+		if ((ts[2] == "gene" and name not in Use_CDS_Dict) or (ts[2] == "CDS" and name in Use_CDS_Dict)):
 			if (name in Orfs_Seq_Dict): # only read in the genes that are in the full protein file, but do NOT check that the string is the same - this will allow the frame-shfited genes to pass through..
 				# important - GFF is 1-based!!! the sam file read coordinates are also 1-based
 				Orfs_Seq_Dict[name]["chrom"] = ts[0];
@@ -109,15 +123,6 @@ for line in annFile:
 					full_string  = "".join(complement.get(base, base) for base in reversed(full_string)) # get the reverse complement
 				else:
 					full_string = Ref_Dict[Orfs_Seq_Dict[name]["chrom"]][Orfs_Seq_Dict[name]["start"]:Orfs_Seq_Dict[name]["end"]+1]
-				#if (Orfs_Seq_Dict[name]["coding"] != full_string): # check that annotated proteins match the reference sequence translated to aa
-					#print("problem with " + name + " annotated protein sequence not matching with reference sequence:  introns?")
-					#print(full_string)
-					#print(Orfs_Seq_Dict[name]["coding"])
-					#Orfs_Seq_Dict.pop(name)
-				#elif (aaseq(full_string)[-1:] != "*"): # this never happens
-				##	print("problem with " + name + " protein not ending with a stop codon!")
-				##	Orfs_Seq_Dict.pop(name)
-				#save the seq?
 				if (name == "YIL009C-A" or name == "YOR239W"):
 					print("for " + name + " protein seq is " + str(len(Orfs_Seq_Dict[name]["coding"])) + " while genomic seq is " + str(len(full_string)) + "\n")
 				Orfs_Seq_Dict[name]["seq"] = full_string

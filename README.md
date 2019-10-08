@@ -2,22 +2,48 @@
 # jupyter nbconvert PeriodicityStats.ipynb --to pdf
 
 
+---------------------------------------------------------------------------------------------------------------------------
+# now try a different simulation infrastructure do not shift, but add reads at the same distribution as before
+
+# get the starts for all genes
+time python get_statistics.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf all_jan2014_sort.sam output/all_jan2014_25_to_32_starts > blu&
+
+# do for shifts of 0.5, 1.0, 2.0, 3.0 to 8.0
+time python simulate_shifts_at_percent.py output/all_jan2014_25_to_32_starts 3.0
+
+# do for shifts of 0.5, 1.0, 2.0, 3.0 to 8.0
+time python find_frameshifts_approach_1.py output/all_jan2014_25_to_32_starts_with_simulated_shifts_at_0.5
+time python find_frameshifts_approach_2.py output/all_jan2014_25_to_32_starts_with_simulated_shifts_at_0.5
+time python find_frameshifts_approach_3.py output/all_jan2014_25_to_32_starts_with_simulated_shifts_at_0.5
+
 
 ----------------------------------------------------------------------------------------------------------------------------
+# full pipeline, approach version 2 
+
+# get the starts for all genes
+time python get_statistics.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf all_jan2014_sort.sam output/all_jan2014_25_to_32_starts > blu&
+
+# add the simulated frameshifts
+time python simulate_shifts.py output/all_jan2014_25_to_32_starts > junk # output/all_jan2014_25_to_32_starts_with_simulated_shifts and output/all_jan2014_25_to_32_starts_simulated_shifts_info
+time python find_frameshifts_approach_2.py output/all_jan2014_25_to_32_starts_with_simulated_shifts
+
+----------------------------------------------------------------------------------------------------------------------------
+# full pipeline, approach version 1 of find_frameshifts - get the max drop - % change in frame 1 reads - for a gene, go from there
+
 # first attempt at simulated reads - use real data and introduce shifts at various frequencies
 time python simulate_shifts.py bla_25_to_32 > junk # creates bla_25_to_32_with_simulated_shifts and bla_25_to_32_simulated_shifts_info
-time python find_frameshifts2.py bla_25_to_32_with_simulated_shifts
+time python find_frameshifts_approach_1.py bla_25_to_32_with_simulated_shifts
 output "*_simulated_shifts_info" and "*_with_simulated_shifts" displayed in SimulatedShiftReport.ipynb
 
 
-# full pipeline attempt #2:
+# full pipeline, approach version 1, attempt #2:
 # use reads from 25-32, get biggest drop, get p-values by t-test, no permutations 
 time python get_statistics.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf all_jan2014_sort.sam bla_25_to_32 > blu&
-time python find_frameshifts2.py bla_25_to_32 
+time python find_frameshifts_approach_1.py bla_25_to_32 
 output displayed in FrameShiftingReport.ipynb
 
 
-# full pipeline attempt # 1: 
+# full pipeline, approach version 1, attempt # 1: 
 # use reads from 25-32, get biggest drop, get p-values by permutations, distributed, p-value from permutations  
 time python get_statistics.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf all_jan2014_sort.sam bla_25_to_32 > blu&
 time python distribute_frameshifts.py # calls find_frameshifts 
