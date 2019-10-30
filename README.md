@@ -3,15 +3,27 @@
 
 
 ---------------------------------------------------------------------------------------------------------------------------
+# now use the approach tried in verify_frameshifts_approach_4.py to implement approach 4 -
+# do for shifts of 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1.0, 2.0, 3.0 to 8.0
+time python find_frameshifts_approach_4.py output/all_jan2014_25_to_32_starts output/all_jan2014_25_to_32_starts_with_simulated_shifts_at_0.5
+
+# now get the probability for all the locations were we introduced the frameshift
+time python verify_frameshifts_approach_4.py output/all_jan2014_25_to_32_starts& # output in output/all_jan2014_25_to_32_starts_simulated_shifts_approach_4_theoretic_distributions
+
+# now see how we do with a combinatorial model
+time python combinatorial_model.py output/all_jan2014_25_to_32_starts
+
+---------------------------------------------------------------------------------------------------------------------------
 # now try a different simulation infrastructure do not shift, but add reads at the same distribution as before
+# try with approach 3 - get the same lengths window before and after
 
 # get the starts for all genes
 time python get_statistics.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf all_jan2014_sort.sam output/all_jan2014_25_to_32_starts > blu&
 
-# do for shifts of 0.5, 1.0, 2.0, 3.0 to 8.0
+# do for shifts of 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1.0, 2.0, 3.0 to 8.0
 time python simulate_shifts_at_percent.py output/all_jan2014_25_to_32_starts 3.0
 
-# do for shifts of 0.5, 1.0, 2.0, 3.0 to 8.0
+# do for shifts of 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1.0, 2.0, 3.0 to 8.0
 time python find_frameshifts_approach_1.py output/all_jan2014_25_to_32_starts_with_simulated_shifts_at_0.5
 time python find_frameshifts_approach_2.py output/all_jan2014_25_to_32_starts_with_simulated_shifts_at_0.5
 time python find_frameshifts_approach_3.py output/all_jan2014_25_to_32_starts_with_simulated_shifts_at_0.5
