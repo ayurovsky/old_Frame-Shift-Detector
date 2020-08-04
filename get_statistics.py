@@ -199,10 +199,16 @@ Read_Lengths_Dict = dict()
 # now process the sam file
 samFile = open(sys.argv[5],'r')
 count = 0 
+prev_name = ""
 for line in samFile:
 	if (line.startswith("@")):
 		continue
 	ts = line.strip().split()
+	# remove duplicate multiple-mapped reads - don't expect any 
+	if (prev_name == ts[0]):
+		print("skipping " + line)
+		continue
+	prev_name = ts[0]
 	# check for unmapped reads
 	if ((ts[2] == "*") or (ts[3] == "*")): 
 		continue
