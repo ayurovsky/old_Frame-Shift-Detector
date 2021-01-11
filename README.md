@@ -1,5 +1,7 @@
 # Frame-Shift-Detector
 # jupyter nbconvert PeriodicityStats.ipynb --to pdf
+
+# a small change
 #############################################
 # now, try to combine only the >90% in f1 starts for all datasets - no hanson, no geraschenko, no williams
 all_jan2014_bowtie_28_starts
