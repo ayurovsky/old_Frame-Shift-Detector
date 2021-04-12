@@ -22,6 +22,7 @@ def aaseq(sequence):
 		if len(sequence[i:i+3]) < 3:
 			break
 		seq += ctaa[sequence[i:i+3]]
+	a = ""
 	return seq
 
 ################################################################################
