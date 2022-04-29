@@ -4,6 +4,30 @@
 # a small change
 # another small change
 #############################################
+
+#notes to make the final table for the bioRxiv
+#start with output/combined_starts_four_sets_above_90_with_found_frameshifts_approach_5.5
+
+# 831 total
+# 98 are before gene starts, 572 plus, and 161 minus
+python get_plus_and_minus_one.py 
+#makes PlusOneGene_FoundApril22_2022.csv and MinusOneGene_FoundApril22_2022.csv
+
+time python for_bioarxiv_get_p_value_for_plus_one_gene_starts.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf PlusOneGene_FoundApril22_2022.csv PlusOneGene_FoundApril22_2022_with_pvalues.csv> bla
+
+cp PlusOneGene_FoundApril22_2022_with_pvalues.csv PlusOne_Frameshifts_With_Supporting_Information.csv
+
+python for_bioarxiv_get_p_value_for_minus_one_gene_starts.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf MinusOneGene_FoundApril22_2022.csv MinusOneGene_FoundApril22_2022_with_pvalues.csv > bla
+
+cp MinusOneGene_FoundApril22_2022_with_pvalues.csv MinusOne_Frameshifts_With_Supporting_Information.csv
+
+# TODO:
+save regenerated PlusOne Figure, add to overleaf
+
+give new PlusOne figure to Bruce, as well as the tables change in ACM-BCB if accepted!!!! 
+
+############################################
+
 # now, try to combine only the >90% in f1 starts for all datasets - no hanson, no geraschenko, no williams
 all_jan2014_bowtie_28_starts
 Wu2019_bowtie_unique_28_29_starts
