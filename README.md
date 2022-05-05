@@ -22,9 +22,9 @@ python for_bioarxiv_get_p_value_for_minus_one_gene_starts.py codons.txt referenc
 cp MinusOneGene_FoundApril22_2022_with_pvalues.csv MinusOne_Frameshifts_With_Supporting_Information.csv
 
 # TODO:
-save regenerated PlusOne Figure, add to overleaf
 
-give new PlusOne figure to Bruce, as well as the tables change in ACM-BCB if accepted!!!! 
+Put new PlusOneStarts file into the document that goes to BioArxiv!!!! 
+make a note in new document that there are 572 plus shifts and 161 minus
 
 ############################################
 
