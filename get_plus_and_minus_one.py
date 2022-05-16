@@ -20,6 +20,8 @@ geneNumReads = dict()
 geneDirection = dict()
 genePlusOne = dict()
 geneMinusOne = dict()
+geneDualPlusOne = dict()
+geneDualMinusOne = dict()
 
 for line in inFile:
     Info_string = line.strip()
@@ -41,6 +43,11 @@ for line in inFile:
             genePlusOne[gene_name] = "yes"
         else:
             geneMinusOne[gene_name] = "yes"
+    else:
+        if (geneDirection[gene_name] == "plus"):
+            geneDualPlusOne[gene_name] = "yes"
+        else:
+            geneDualMinusOne[gene_name] = "yes"
     genePercent[gene_name] = float(Info_string.split("\t")[7].split(" ")[1])
     
     geneNumReads[gene_name] = float(Info_string.split("\t")[8].split(" ")[1])
@@ -52,12 +59,16 @@ for line in inFile:
     
 sorted_PVals = sorted(genePDict.items(), key=lambda x: x[1])
     
-outFile = open("PlusOneGene_FoundApril22_2022.csv", "w")
-outFile2 = open("MinusOneGene_FoundApril22_2022.csv", "w")
+#outFile = open("PlusOneGene_FoundApril22_2022.csv", "w")
+#outFile2 = open("MinusOneGene_FoundApril22_2022.csv", "w")
+outFile3 = open("PutativeDualEncoding_FoundApril22_2022.csv", "w")
 for (gene, p_val) in sorted_PVals:
-    
-    if gene in genePlusOne:
-        outFile.write(gene + "," + str(geneShiftStartDict[gene]) + "," + str(geneShiftEndDict[gene]) + ",10^" + str(round(p_val)) + "," + str(round(genePercent[gene],2)) + "," + str(geneNumReads[gene]) + "," + str(round(geneBeforePvalue[gene])) +  "\n")
-    if gene in geneMinusOne:
-        outFile2.write(gene + "," + str(geneShiftStartDict[gene]) + "," + str(geneShiftEndDict[gene]) + ",10^" + str(round(p_val)) + "," + str(round(genePercent[gene],2)) + "," + str(geneNumReads[gene]) + "," + str(round(geneBeforePvalue[gene])) +  "\n")
-outFile.close()
+    #if gene in genePlusOne:
+    #    outFile.write(gene + "," + str(geneShiftStartDict[gene]) + "," + str(geneShiftEndDict[gene]) + ",10^" + str(round(p_val)) + "," + str(round(genePercent[gene],2)) + "," + str(geneNumReads[gene]) + "," + str(round(geneBeforePvalue[gene])) +  "\n")
+    #if gene in geneMinusOne:
+    #    outFile2.write(gene + "," + str(geneShiftStartDict[gene]) + "," + str(geneShiftEndDict[gene]) + ",10^" + str(round(p_val)) + "," + str(round(genePercent[gene],2)) + "," + str(geneNumReads[gene]) + "," + str(round(geneBeforePvalue[gene])) +  "\n")
+    if gene in geneDualPlusOne:
+        outFile3.write(gene + "," + str(geneShiftEndDict[gene]) + ",10^" + str(round(p_val)) + "," + str(round(genePercent[gene],2)) + "," + str(geneNumReads[gene]) + ",plus\n")
+    if gene in geneDualMinusOne:
+        outFile3.write(gene + "," + str(geneShiftEndDict[gene]) + ",10^" + str(round(p_val)) + "," + str(round(genePercent[gene],2)) + "," + str(geneNumReads[gene]) + ",minus\n")
+#outFile.close()

@@ -11,7 +11,9 @@
 # 831 total
 # 98 are before gene starts, 572 plus, and 161 minus
 python get_plus_and_minus_one.py 
-#makes PlusOneGene_FoundApril22_2022.csv and MinusOneGene_FoundApril22_2022.csv
+#makes PlusOneGene_FoundApril22_2022.csv and MinusOneGene_FoundApril22_2022.csv and PutativeDualEncoding_FoundApril22_2022.csv
+
+time python for_bioarxiv_get_gene_names_for_dual_encoding.py reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta PutativeDualEncoding_FoundApril22_2022.csv PutativeDualEncoding_With_Supporting_Information.csv
 
 time python for_bioarxiv_get_p_value_for_plus_one_gene_starts.py codons.txt reference_files/s_cerevisae_orf_coding_no_Mito_no_Plasmid.fasta reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.fa reference_files/saccharomyces_cerevisiae_R64-1-1_20110208.gtf PlusOneGene_FoundApril22_2022.csv PlusOneGene_FoundApril22_2022_with_pvalues.csv> bla
 
@@ -25,6 +27,7 @@ cp MinusOneGene_FoundApril22_2022_with_pvalues.csv MinusOne_Frameshifts_With_Sup
 
 Put new PlusOneStarts file into the document that goes to BioArxiv!!!! 
 make a note in new document that there are 572 plus shifts and 161 minus
+Add FrameShiftDetectorToName
 
 ############################################
 
